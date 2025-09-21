@@ -1,4 +1,11 @@
 using Deliver.Api.AppConfiguration;
+using Deliver.BLL.DTOs.Account;
+using Deliver.Dal.Data;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using System;
+using System.Net;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +16,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDependencies(builder.Configuration);
+
+
+builder.Services
+            .AddFluentValidationAutoValidation()
+            .AddValidatorsFromAssemblies(new[]
+            {
+        Assembly.GetExecutingAssembly(),           // Current Web.APIs
+        typeof(LoginDTO).Assembly,               // Web.Application  
+        typeof(ApplicationDbContext).Assembly              // Web.Infrastructure
+            });
 
 var app = builder.Build();
 

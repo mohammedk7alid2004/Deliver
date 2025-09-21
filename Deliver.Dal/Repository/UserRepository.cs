@@ -51,5 +51,8 @@ namespace Deliver.Dal.Repository
 
         public async Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role)
            =>await _userManager.AddToRoleAsync(user, role);
+
+        public async Task<bool?> Any(string email)
+            =>await _context.Users.AnyAsync(x=>x.Email== email);
     }
 }
