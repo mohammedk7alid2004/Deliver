@@ -20,6 +20,11 @@ public class UnitOfWork : IUnitOfWork
 
     }
     public IRepository<ApplicationUser> Users { get; }
+
+    public IRepository<Customer> Customers => throw new NotImplementedException();
+
+    public IRepository<Delivery> Deliveries => throw new NotImplementedException();
+
     public async Task<TResult> ExecuteInTransactionAsync<TResult>(Func<Task<TResult>> action)
     {
         using var transaction = await _context.Database.BeginTransactionAsync();
