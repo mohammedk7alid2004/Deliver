@@ -1,4 +1,6 @@
-﻿namespace Deliver.Dal.Abstractions;
+﻿using System;
+
+namespace Deliver.Dal.Abstractions;
 
 public class Result
 {
