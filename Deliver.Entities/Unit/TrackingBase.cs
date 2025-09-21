@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Deliver.Entities.Unit
 {
     public class TrackingBase
