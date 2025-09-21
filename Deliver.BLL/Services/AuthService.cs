@@ -47,8 +47,11 @@ namespace Deliver.BLL.Services
 
         public async Task<Result<TokenDTO>> RegisterAsync(RegisterDTO registerDto)
         {
-           if (await _userRepository.FindByEmailAsync(registerDto.Email) is not { } )
+            var exist = await _userRepository.Any(registerDto.Email);
+
+            if (exist == true) 
                 return Result.Failure<TokenDTO>(UserErrors.DuplicatedEmail);
+
 
             var user = new ApplicationUser
             {
@@ -66,8 +69,9 @@ namespace Deliver.BLL.Services
             {
                 await _userRepository.CreateUserProfileAsync(user);
 
-                var role = registerDto.UserType.ToString();
-                await _userRepository.AddToRoleAsync(user, role);
+                //TODOO
+                //var role = registerDto.UserType.ToString();
+                //await _userRepository.AddToRoleAsync(user, role);
 
 
                 var tokenResult = _jwtProvider.GenerateToken(user);

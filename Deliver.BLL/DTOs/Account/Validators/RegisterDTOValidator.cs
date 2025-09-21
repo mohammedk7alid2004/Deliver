@@ -37,7 +37,13 @@ namespace Deliver.BLL.DTOs.Account.Validators
             RuleFor(x => x.Phone)
                 .NotEmpty()
                 .NotNull();
-               
+
+            RuleFor(x => x.UserType)
+            .IsInEnum()
+            .WithMessage("UserType must be Customer, Delivery, or Supplier or 1,2,3.");
+
+
+
         }
 
 

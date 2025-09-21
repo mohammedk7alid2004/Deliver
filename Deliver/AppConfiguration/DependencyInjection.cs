@@ -1,5 +1,6 @@
-﻿using System.Text;
-using Deliver.BLL.Authentication;
+﻿using Deliver.BLL.Authentication;
+using Deliver.BLL.Interfaces;
+using Deliver.BLL.Services;
 using Deliver.Dal.Data;
 using Deliver.Dal.Repository;
 using Deliver.Entities.Entities;
@@ -8,6 +9,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
+using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+
 
 namespace Deliver.Api.AppConfiguration;
 
@@ -33,9 +39,13 @@ public  static class DependencyInjection
     {
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IAuthService, AuthService>();
+
         return services;
 
     }
+
     private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddIdentity<ApplicationUser, IdentityRole<int>>()

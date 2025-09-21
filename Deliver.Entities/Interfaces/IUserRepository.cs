@@ -12,6 +12,7 @@ namespace Deliver.Entities.Interfaces
     public interface IUserRepository
     {
         Task<ApplicationUser?> FindByEmailAsync(string email);
+        Task<bool?> Any(string email);
         Task<IdentityResult> CreateAsync(ApplicationUser user, string password);
         Task CreateUserProfileAsync(ApplicationUser user);
         Task<IList<string>> GetRolesAsync(ApplicationUser user);
