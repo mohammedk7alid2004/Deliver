@@ -1,22 +1,4 @@
-﻿using Deliver.BLL.Authentication;
-using Deliver.BLL.Interfaces;
-using Deliver.BLL.Services;
-using Deliver.Dal.Data;
-using Deliver.Dal.Repository;
-using Deliver.Entities.Entities;
-using Deliver.Entities.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Reflection;
-using System.Text;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-
-
-namespace Deliver.Api.AppConfiguration;
-
+﻿namespace Deliver.Api.AppConfiguration;
 public  static class DependencyInjection
 {
     public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)

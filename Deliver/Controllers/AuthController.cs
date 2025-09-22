@@ -1,9 +1,4 @@
-﻿using Deliver.Api.Abstractions;
-using Deliver.BLL.DTOs.Account;
-using Deliver.BLL.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
+﻿using Deliver.BLL.Interfaces;
 namespace Deliver.Api.Controllers
 {
     [Route("api/[controller]")]

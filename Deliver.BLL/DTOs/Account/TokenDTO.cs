@@ -8,8 +8,10 @@ namespace Deliver.BLL.DTOs.Account
 {
     public record TokenDTO
 (
-        int UserId,
-        string Token,
-         int expiresIn
+          int UserId,
+          string Token,
+          int expiresIn,
+          string RefreshToken,
+         DateTime RefreshTokenExpiration
         );
 }
