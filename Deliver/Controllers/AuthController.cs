@@ -21,5 +21,12 @@ namespace Deliver.Api.Controllers
             var response = await _authService.RegisterAsync(registerDto);
             return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
+        {
+            var authResult = await _authService.GetRefreshTokenAsync(request.Token, request.RefreshToken, cancellationToken);
+
+            return authResult.IsSuccess ? Ok(authResult.Value) : authResult.ToProblem();
+        }
     }
 }
