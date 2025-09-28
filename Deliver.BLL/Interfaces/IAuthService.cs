@@ -14,6 +14,8 @@ namespace Deliver.BLL.Interfaces
         Task<Result<TokenDTO>> RegisterAsync(RegisterDTO registerDto);
         Task<Result<TokenDTO>> GetRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken = default);
 
+
+
     }
 
 }

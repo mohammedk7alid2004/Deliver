@@ -43,5 +43,8 @@ namespace Deliver.Dal.Abstractions.Errors
         public static readonly Abstractions.Error InvalidRoles =
         new("User.InvalidRoles", "Invalid roles", StatusCodes.Status400BadRequest);
 
+        public static readonly Abstractions.Error invalidAddress =
+        new("User.invalidAddress", "Could not save address", StatusCodes.Status400BadRequest);
+
     }
 }
