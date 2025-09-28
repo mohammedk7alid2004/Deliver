@@ -17,6 +17,7 @@ namespace Deliver.Entities.Interfaces
         Task CreateUserProfileAsync(ApplicationUser user);
         Task<IList<string>> GetRolesAsync(ApplicationUser user);
         Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role);
+        Task<bool> AddAddress(int userId, string governmentName, string cityName, string zoneName, string streetName);
 
     }
 }
