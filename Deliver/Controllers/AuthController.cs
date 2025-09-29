@@ -1,4 +1,7 @@
 ﻿using Deliver.BLL.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 namespace Deliver.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -27,6 +30,26 @@ namespace Deliver.Api.Controllers
             var authResult = await _authService.GetRefreshTokenAsync(request.Token, request.RefreshToken, cancellationToken);
 
             return authResult.IsSuccess ? Ok(authResult.Value) : authResult.ToProblem();
+        }
+    }
+
+
+    [Route("account")]
+    public class AccountController : Controller
+    {
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            var props = new AuthenticationProperties { RedirectUri = "/account/google-response" };
+            return Challenge(props, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [Authorize]
+        [HttpGet("google-response")]
+        public IActionResult GoogleResponse()
+        {
+            var claims = User.Claims.Select(c => new { c.Type, c.Value });
+            return Ok(claims);
         }
     }
 }
