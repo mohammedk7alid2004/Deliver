@@ -3,6 +3,7 @@ using Deliver.BLL.DTOs.Account;
 using Deliver.Dal.Data;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Net;
 using System.Reflection;
@@ -26,6 +27,16 @@ builder.Services
         typeof(LoginDTO).Assembly,               // Web.Application  
         typeof(ApplicationDbContext).Assembly              // Web.Infrastructure
             });
+
+builder.Services.AddAuthentication()
+           .AddGoogle(options =>
+           {
+               IConfigurationSection googleAuthSection = builder.Configuration.GetSection("Authentication:Google");
+
+               options.ClientId = googleAuthSection["ClientId"];
+               options.ClientSecret = googleAuthSection["ClientSecret"];
+           });
+builder.Services.AddEmailConfig(builder.Configuration);
 
 var app = builder.Build();
 

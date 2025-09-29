@@ -1,32 +1,81 @@
-﻿using Deliver.BLL.Interfaces;
-namespace Deliver.Api.Controllers
+﻿using Deliver.BLL.DTOs.Email;
+using Deliver.BLL.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
+namespace Deliver.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AuthController(IAuthService authService) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController(IAuthService authService) : ControllerBase
+    private readonly IAuthService _authService = authService;
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginDTO loginDto)
     {
-        private readonly IAuthService _authService = authService;
+        var response = await _authService.LoginAsync(loginDto);
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDTO loginDto)
-        {
-            var response = await _authService.LoginAsync(loginDto);
+        return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
+    }
 
-            return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
-        }
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterDTO registerDto)
+    {
+        var response = await _authService.RegisterAsync(registerDto);
+        return response.IsSuccess ? Ok(response) : response.ToProblem();
+    }
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
+    {
+        var authResult = await _authService.GetRefreshTokenAsync(request.Token, request.RefreshToken, cancellationToken);
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDTO registerDto)
-        {
-            var response = await _authService.RegisterAsync(registerDto);
-            return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
-        }
-        [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
-        {
-            var authResult = await _authService.GetRefreshTokenAsync(request.Token, request.RefreshToken, cancellationToken);
+        return authResult.IsSuccess ? Ok(authResult.Value) : authResult.ToProblem();
+    }
+    [HttpPost("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _authService.ConfirmEmailAsync(request);
 
-            return authResult.IsSuccess ? Ok(authResult.Value) : authResult.ToProblem();
-        }
+        return result.IsSuccess ? Ok() : result.ToProblem();
+    }
+
+    [HttpPost("resend-confirmation-email")]
+    public async Task<IActionResult> ResendConfirmationEmail([FromBody] ResendConfirmationEmailRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _authService.ResendConfirmationEmailAsync(request);
+
+        return result.IsSuccess ? Ok() : result.ToProblem();
+    }
+    [HttpPost("verify-reset-otp")]
+    public async Task<IActionResult> VerifyResetOtp([FromBody] VerifyOtpRequest request)
+    {
+        var result = await _authService.VerifyResetOtpAsync(request.Email, request.Code);
+
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+
+        return Ok("OTP is valid.");
+    }
+
+}
+
+
+[Route("account")]
+public class AccountController : Controller
+{
+    [HttpGet("login")]
+    public IActionResult Login()
+    {
+        var props = new AuthenticationProperties { RedirectUri = "/account/google-response" };
+        return Challenge(props, GoogleDefaults.AuthenticationScheme);
+    }
+
+    [Authorize]
+    [HttpGet("google-response")]
+    public IActionResult GoogleResponse()
+    {
+        var claims = User.Claims.Select(c => new { c.Type, c.Value });
+        return Ok(claims);
     }
 }
