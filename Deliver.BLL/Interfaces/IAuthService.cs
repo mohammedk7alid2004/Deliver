@@ -12,4 +12,5 @@ public interface IAuthService
     Task<Result> ResendConfirmationEmailAsync(ResendConfirmationEmailRequest request);
     Task<Result> VerifyResetOtpAsync(string email, string code);
 
+
 }

@@ -30,8 +30,14 @@ public static class DependencyInjection
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAuthService, AuthService>();
+<<<<<<< HEAD
         services.AddMemoryCache();
         services.AddScoped<EmailBodyBuilder>();
+=======
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IDeliveryService, DeliveryService>();
+
+>>>>>>> 20ef87fed5a63af05c33cdec1ae3a855e3e27b17
         return services;
     }
 

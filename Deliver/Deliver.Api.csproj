@@ -29,6 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+<<<<<<< HEAD
 		<Folder Include="Controllers\" />
 	</ItemGroup>
 
@@ -37,6 +38,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+=======
+>>>>>>> 20ef87fed5a63af05c33cdec1ae3a855e3e27b17
 		<ProjectReference Include="..\Deliver.BLL\Deliver.BLL.csproj" />
 		<ProjectReference Include="..\Deliver.Dal\Deliver.Dal.csproj" />
 	</ItemGroup>
