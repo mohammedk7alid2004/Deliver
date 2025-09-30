@@ -5,9 +5,12 @@ using Deliver.BLL.Helper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using static System.Net.WebRequestMethods;
 using ResendConfirmationEmailRequest = Deliver.BLL.DTOs.Email.ResendConfirmationEmailRequest;
+using ResetPasswordRequest = Deliver.BLL.DTOs.Account.ResetPasswordRequest;
 
 namespace Deliver.BLL.Services;
 public class AuthService(
@@ -223,7 +226,62 @@ public class AuthService(
 
         return Result.Success();
     }
+    private async Task<Result> SendPasswordResetOtpAsync(ApplicationUser user)
+    {
+
+        var otpCode = new Random().Next(100000, 999999).ToString();
+
+        _cache.Set($"OTP_{user.Id}", otpCode, TimeSpan.FromMinutes(_otpExpiryMinutes));
+
+        
+
+        var emailBody = builder.GenerateEmailBody("ForgetPassword",
+            templateModel: new Dictionary<string, string>
+            {
+                { "{{name}}", user.FirstName },
+                { "{{otp_code}}", otpCode },
+                { "{{expiry_minutes}}", _otpExpiryMinutes.ToString() }
+            }
+        );
+
+        await _emailSender.SendEmailAsync(user.Email!, "🔐 Deliver: Password Reset OTP", emailBody);
+
+        _logger.LogInformation("Password reset OTP sent to user {UserId}: {OtpCode}", user.Id, otpCode);
+
+        return Result.Success();
+    }
+
+    public async Task<Result> ResetPasswordAsync(ResetPasswordRequest request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+
+        if (user is null || !user.EmailConfirmed)
+            return Result.Failure(UserErrors.InvalidCode);
+
+        if (!_cache.TryGetValue($"OTP_{user.Id}", out string? cachedOtp) || cachedOtp != request.Code)
+            return Result.Failure(UserErrors.InvalidCode);
+
+        _cache.Remove($"OTP_{user.Id}");
+
+        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var result = await _userManager.ResetPasswordAsync(user, resetToken, request.newPassword);
+
+        if (result.Succeeded)
+        {
+            return Result.Success();
+        }
+        var error = result.Errors.First();
+        return Result.Failure(new Error(error.Code, error.Description, StatusCodes.Status400BadRequest));
+    }
 
 
- 
+    public async Task<Result> SendResetOtpAsync(string email)
+    {
+        if (await _userManager.FindByEmailAsync(email) is not { } user)
+            return Result.Failure(UserErrors.UserNotFound);
+        if (!user.EmailConfirmed)
+            return Result.Failure(UserErrors.EmailNotConfirmed);
+        await SendPasswordResetOtpAsync(user);
+        return Result.Success();
+    }
 }
