@@ -43,4 +43,8 @@
 		<ProjectReference Include="..\Deliver.Dal\Deliver.Dal.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\Delivery\" />
+	</ItemGroup>
+
 </Project>

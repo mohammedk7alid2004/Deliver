@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Deliver.BLL.DTOs.Delivery;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Deliver.BLL.Interfaces
 {
     public interface IDeliveryService
     {
+        Task<Result> ChooseVehicleTypeAsync(int userId, VehicleTypeenum vehicleType);
+        Task<Result> CompleteDeliveryProfileasync(int userid,CompleteProfileDeliveryDTO request);
 
     }
 }

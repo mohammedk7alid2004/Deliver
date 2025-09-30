@@ -4,6 +4,7 @@ using Deliver.Dal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Deliver.Dal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250928223515_update vehicle")]
+    partial class updatevehicle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,17 +212,11 @@ namespace Deliver.Dal.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PhotoUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("bonus")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("city")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("is_available")
                         .HasColumnType("bit");
@@ -358,10 +355,12 @@ namespace Deliver.Dal.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("vehicleType_name")
+                    b.Property<int?>("vehicleTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("vehicleTypeId");
 
                     b.ToTable("vehicleTypes");
                 });
@@ -657,6 +656,15 @@ namespace Deliver.Dal.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Deliver.Entities.Entities.VehicleType", b =>
+                {
+                    b.HasOne("Deliver.Entities.Entities.VehicleType", "vehicleType")
+                        .WithMany()
+                        .HasForeignKey("vehicleTypeId");
+
+                    b.Navigation("vehicleType");
                 });
 
             modelBuilder.Entity("Deliver.Entities.Entities.Zone", b =>

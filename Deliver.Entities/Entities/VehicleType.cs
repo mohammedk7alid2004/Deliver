@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Deliver.Entities.Enums;
+using Deliver.Entities.Unit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +8,11 @@ using System.Threading.Tasks;
 
 namespace Deliver.Entities.Entities
 {
-    public class VehicleType
+    public class VehicleType:TrackingBase
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public VehicleTypeenum vehicleType_name { get; set; } 
         public string? Description { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         public ICollection<Delivery> Deliverys { get; set; } = [];
     }

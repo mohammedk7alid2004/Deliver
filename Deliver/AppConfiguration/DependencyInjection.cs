@@ -29,6 +29,9 @@ public static class DependencyInjection
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+        services.AddScoped<IDeliveryRepository, DeliveryRepository>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddMemoryCache();
         services.AddScoped<EmailBodyBuilder>();
