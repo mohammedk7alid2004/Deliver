@@ -1,8 +1,12 @@
 ﻿using Deliver.BLL.DTOs.Email;
 using Deliver.BLL.Interfaces;
+using Deliver.BLL.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
+using ResendConfirmationEmailRequest = Deliver.BLL.DTOs.Email.ResendConfirmationEmailRequest;
+using ResetPasswordRequest = Deliver.BLL.DTOs.Account.ResetPasswordRequest;
 namespace Deliver.Api.Controllers;
 
 [Route("api/[controller]")]
@@ -57,7 +61,20 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         return Ok("OTP is valid.");
     }
+    [HttpPost("forget-password")]
+    public async Task<IActionResult> ForgetPassword([FromBody] ForgetPasswordRequest request)
+    {
+        var result = await _authService.SendResetOtpAsync(request.Email);
 
+        return result.IsSuccess ? Ok() : result.ToProblem();
+    }
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    {
+        var result = await _authService.ResetPasswordAsync(request);
+
+        return result.IsSuccess ? Ok() : result.ToProblem();
+    }
 }
 
 
