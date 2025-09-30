@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Deliver.Entities.Enums
 {
-    [JsonConverter(typeof(CaseInsensitiveEnumConverter<VehicleType>))]
-    public enum VehicleType
+    [JsonConverter(typeof(CaseInsensitiveEnumConverter<VehicleTypeenum>))]
+    public enum VehicleTypeenum
     {
         Bicycle = 1,
         Car = 2,

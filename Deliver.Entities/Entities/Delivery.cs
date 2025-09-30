@@ -15,7 +15,8 @@ namespace Deliver.Entities.Entities
         public int rate { get; set; }
         public bool is_available { get; set; }
         public int vehicle_type_id { get; set; }
-
+        public string city { get; set; }=string.Empty;
+        public string PhotoUrl { get; set; }=string.Empty;
         public int ApplicationUserId { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
         public ICollection<VehicleType> Vehicles { get; set; } = [];

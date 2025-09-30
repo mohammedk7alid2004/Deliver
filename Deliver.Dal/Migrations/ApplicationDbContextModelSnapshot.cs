@@ -209,11 +209,17 @@ namespace Deliver.Dal.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("bonus")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("city")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("is_available")
                         .HasColumnType("bit");
@@ -352,12 +358,10 @@ namespace Deliver.Dal.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("vehicleTypeId")
+                    b.Property<int>("vehicleType_name")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("vehicleTypeId");
 
                     b.ToTable("vehicleTypes");
                 });
@@ -653,15 +657,6 @@ namespace Deliver.Dal.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Deliver.Entities.Entities.VehicleType", b =>
-                {
-                    b.HasOne("Deliver.Entities.Entities.VehicleType", "vehicleType")
-                        .WithMany()
-                        .HasForeignKey("vehicleTypeId");
-
-                    b.Navigation("vehicleType");
                 });
 
             modelBuilder.Entity("Deliver.Entities.Entities.Zone", b =>

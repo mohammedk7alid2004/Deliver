@@ -17,7 +17,7 @@ namespace Deliver.Api.Controllers
         {
             var userid=User.GetUserId();
             var result = await _userService.GetLocationAsync(userid, request);
-            return result.IsSuccess ? Ok(result.Value) : BadRequest(result);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
 
         }
 

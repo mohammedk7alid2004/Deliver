@@ -8,7 +8,11 @@ namespace Deliver.BLL.DTOs.Delivery
 {
     public record CompleteProfileDeliveryDTO
     (
-
-
+      string FirstName,
+      string LastName,
+      string Email,
+      string Phone,
+      string city,
+    IFormFile? Photo
     );
 }
