@@ -1,5 +1,11 @@
-﻿namespace Deliver.Api.AppConfiguration;
-public  static class DependencyInjection
+﻿using Deliver.BLL.EmailSender;
+using Deliver.BLL.Helper;
+using Deliver.BLL.Settings;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
+
+namespace Deliver.Api.AppConfiguration;
+public static class DependencyInjection
 {
 
     public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
@@ -8,6 +14,8 @@ public  static class DependencyInjection
           .AddBusinessLogicConfig(configuration)
           .AddAuthConfig(configuration)
           .AddCors(configuration);
+          .AddAuthConfig(configuration);
+
         var connectionString = configuration.GetConnectionString("default") ??
            throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -16,9 +24,9 @@ public  static class DependencyInjection
             options.UseSqlServer(connectionString);
         });
 
-
         return services;
     }
+
     private static IServiceCollection AddBusinessLogicConfig(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -28,11 +36,30 @@ public  static class DependencyInjection
 
         services.AddScoped<IDeliveryRepository, DeliveryRepository>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddMemoryCache();
+        services.AddScoped<EmailBodyBuilder>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDeliveryService, DeliveryService>();
 
         return services;
+    }
 
+    public static IServiceCollection AddEmailConfig(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+        services.AddTransient<IEmailSender>(provider =>
+        {
+            var emailSettings = provider.GetRequiredService<IOptions<MailSettings>>().Value;
+            return new EmailSender(
+                emailSettings.Email,
+                emailSettings.AppPassword,
+                emailSettings.Host,
+                emailSettings.SSL,
+                emailSettings.Port,
+                emailSettings.IsBodyHtml
+            );
+        });
+        return services;
     }
 
     private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
@@ -41,7 +68,6 @@ public  static class DependencyInjection
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-        services.AddSingleton<IJwtProvider, JwtProvider>();
 
         services.AddOptions<JwtOptions>()
             .BindConfiguration("Jwt")
@@ -75,7 +101,6 @@ public  static class DependencyInjection
             options.Password.RequiredLength = 8;
             options.User.RequireUniqueEmail = true;
         });
-
 
         return services;
     }

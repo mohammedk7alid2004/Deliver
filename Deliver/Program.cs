@@ -37,6 +37,7 @@ builder.Services.AddAuthentication()
                options.ClientId = googleAuthSection["ClientId"];
                options.ClientSecret = googleAuthSection["ClientSecret"];
            });
+builder.Services.AddEmailConfig(builder.Configuration);
 
 
 var app = builder.Build();
