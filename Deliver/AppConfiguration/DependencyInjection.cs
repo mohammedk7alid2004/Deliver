@@ -1,11 +1,13 @@
 ﻿namespace Deliver.Api.AppConfiguration;
 public  static class DependencyInjection
 {
+
     public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services
           .AddBusinessLogicConfig(configuration)
-          .AddAuthConfig(configuration);
+          .AddAuthConfig(configuration)
+          .AddCors(configuration);
         var connectionString = configuration.GetConnectionString("default") ??
            throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -74,6 +76,22 @@ public  static class DependencyInjection
             options.User.RequireUniqueEmail = true;
         });
 
+
+        return services;
+    }
+
+    private static IServiceCollection AddCors(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
 
         return services;
     }

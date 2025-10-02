@@ -19,6 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDependencies(builder.Configuration);
 
 
+
 builder.Services
             .AddFluentValidationAutoValidation()
             .AddValidatorsFromAssemblies(new[]
@@ -37,6 +38,7 @@ builder.Services.AddAuthentication()
                options.ClientSecret = googleAuthSection["ClientSecret"];
            });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,9 +49,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

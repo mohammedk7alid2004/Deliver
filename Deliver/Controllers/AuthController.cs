@@ -1,4 +1,5 @@
 ﻿using Deliver.BLL.Interfaces;
+using Deliver.Entities.Enums;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,9 @@ namespace Deliver.Api.Controllers
             var response = await _authService.RegisterAsync(registerDto);
             return response.IsSuccess ? Ok(response.Value) : response.ToProblem();
         }
+
+
+
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
         {

@@ -11,11 +11,7 @@ namespace Deliver.BLL.DTOs.Account
     public record RegisterDTO
     (
       string Email,
-      string Password,
-      string FirstName,
-      string LastName,
-      string Phone,
-      UserType UserType
+      string Password
 
         );
 }

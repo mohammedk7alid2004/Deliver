@@ -12,6 +12,8 @@ namespace Deliver.BLL.Interfaces
     {
         Task<Result<TokenDTO>> LoginAsync(LoginDTO loginDto);
         Task<Result<TokenDTO>> RegisterAsync(RegisterDTO registerDto);
+        Task<Result> GetUserType(int userid, UserType userType);
+        
         Task<Result<TokenDTO>> GetRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken = default);
 
 

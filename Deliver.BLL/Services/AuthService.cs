@@ -91,18 +91,12 @@ public class AuthService(
         var user = new ApplicationUser
         {
             Email = registerDto.Email,
-            UserName = registerDto.Email,
-            FirstName = registerDto.FirstName,
-            LastName = registerDto.LastName,
-            PhoneNumber = registerDto.Phone,
-            UserType = registerDto.UserType,
-
+            UserName = registerDto.Email
         };
         var result = await _userRepository.CreateAsync(user, registerDto.Password);
 
         if (result.Succeeded)
         {
-            await _userRepository.CreateUserProfileAsync(user);
 
             //TODOO
             //var role = registerDto.UserType.ToString();
@@ -132,8 +126,15 @@ public class AuthService(
         return Result.Failure<TokenDTO>(new Error(error.Code, error.Description, StatusCode: StatusCodes.Status409Conflict));
 
     }
+
     private static string GenerateRefreshToken()
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+    }
+
+    public async Task<Result> GetUserType(int userid,UserType userType)
+    {
+        await _userRepository.CreateUserProfileAsync(userid,userType);
+        return Result.Success();
     }
 }

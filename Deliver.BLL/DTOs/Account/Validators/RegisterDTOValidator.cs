@@ -26,21 +26,21 @@ namespace Deliver.BLL.DTOs.Account.Validators
             .Matches(RegexPatterns.Password).WithMessage("Password must contain uppercase and lowercase letters, numbers, and special characters");
 
 
-            RuleFor(x => x.FirstName)
-                .NotEmpty()
-                .NotNull();
+            //RuleFor(x => x.FirstName)
+            //    .NotEmpty()
+            //    .NotNull();
 
-            RuleFor(x => x.LastName)
-                .NotEmpty()
-                .NotNull();
+            //RuleFor(x => x.LastName)
+            //    .NotEmpty()
+            //    .NotNull();
 
-            RuleFor(x => x.Phone)
-                .NotEmpty()
-                .NotNull();
+            //RuleFor(x => x.Phone)
+            //    .NotEmpty()
+            //    .NotNull();
 
-            RuleFor(x => x.UserType)
-            .IsInEnum()
-            .WithMessage("UserType must be Customer, Delivery, or Supplier or 1,2,3.");
+            //RuleFor(x => x.UserType)
+            //.IsInEnum()
+            //.WithMessage("UserType must be Customer, Delivery, or Supplier or 1,2,3.");
 
 
 

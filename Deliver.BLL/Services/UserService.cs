@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Deliver.BLL.DTOs.Customer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,11 @@ namespace Deliver.BLL.Services
     {
         private readonly IUserRepository _userRepository = userRepository;
 
-        public async Task<Result<bool>> GetLocationAsync(int userid,AddressDTo request)
+        public async Task<Result> CompleteCustomerprofileAsync(int userid, CompleteCustomerDTO request)
         {
-            var result=await _userRepository.AddAddress(userid, request.Government,request.City,request.Zone,request.Street);
-                return Result.Success(true);
+            var result2 = await _userRepository.CompleteCustomerprofile(userid,request.Adapt<ApplicationUser>(),request.Address.Government,request.Address.City,request.Address.Zone,request.Address.Street);
+            return Result.Success();
         }
+
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deliver.BLL.DTOs.Validators
+namespace Deliver.BLL.DTOs.Delivery.Validators
 {
     public class CompleteProfileDeliveryDTOValidator : AbstractValidator<CompleteProfileDeliveryDTO>
     {
