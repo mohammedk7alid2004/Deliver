@@ -30,7 +30,8 @@ public static class DependencyInjection
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
+        services.AddScoped<IParentCategoryServices, ParentCategoryServices>();
+      services.AddScoped<ISubCategoryServices, SubCategoryServices>();
         services.AddScoped<IDeliveryRepository, DeliveryRepository>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddMemoryCache();
