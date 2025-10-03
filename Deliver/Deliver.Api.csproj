@@ -30,10 +30,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Controllers\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Include="wwwroot\Templates\EmailConfirmation.html" />
 	  <None Include="wwwroot\Templates\ForgetPassword.html" />
 	</ItemGroup>
@@ -45,6 +41,8 @@
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\Delivery\" />
+	  <Folder Include="wwwroot\category\" />
+	  <Folder Include="wwwroot\subcategory\" />
 	</ItemGroup>
 
 </Project>
