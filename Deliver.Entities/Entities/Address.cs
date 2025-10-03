@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace Deliver.Entities.Entities
 {
 
-    // العنوان هنا هيربط اليوزر بالشارع وعن طريق الشارع هيربطه بالمنطقه ثم المدينه ثم المحافظه 
     public class Address
     {
         public int Id { get; set; }
