@@ -1,5 +1,6 @@
 ﻿
 using Deliver.BLL.DTOs.Supplier;
+using Deliver.Entities.Entities;
 
 namespace Deliver.BLL.Services;
 
@@ -16,9 +17,19 @@ public class SupplierServices(UserManager<ApplicationUser>userManager , IUnitOfW
         var subCategory = await _unitOfWork.SubCategories.GetByIdAsync(request.SubCategoryId);
         if(subCategory == null)
             return  Result.Failure(CategoryError.SubCategoryNotFound);
+    
         var supplier = request.Adapt<Supplier>();
+        string newPhotoUrl = supplier.Photo;
+        if (request.Image != null)
+        {
+            newPhotoUrl = FileHelper.FileHelper.UploadFile(request.Image, "Supplier");
+            if (!string.IsNullOrEmpty(supplier.Photo))
+                FileHelper.FileHelper.DeleteFile(supplier.Photo, "Supplier");
+        }
         user.FirstName = request.OwnerName;
         user.PhoneNumber = request.PhoneNumber;
+        supplier.Photo = newPhotoUrl;
+
         await _userManager.UpdateAsync(user);
         await  _unitOfWork.Suppliers.AddAsync(supplier);
         await _unitOfWork.SaveAsync();

@@ -42,6 +42,7 @@
 	<ItemGroup>
 	  <Folder Include="wwwroot\Delivery\" />
 	  <Folder Include="wwwroot\category\" />
+	  <Folder Include="wwwroot\Supplier\" />
 	  <Folder Include="wwwroot\subcategory\" />
 	</ItemGroup>
 
