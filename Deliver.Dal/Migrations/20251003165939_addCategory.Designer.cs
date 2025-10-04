@@ -4,6 +4,7 @@ using Deliver.Dal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Deliver.Dal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251003165939_addCategory")]
+    partial class addCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -391,17 +394,12 @@ namespace Deliver.Dal.Migrations
                     b.Property<string>("ShopName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("Suppliers");
                 });
@@ -718,7 +716,7 @@ namespace Deliver.Dal.Migrations
                     b.HasOne("Deliver.Entities.Entities.ParentCategory", "ParentCategory")
                         .WithMany("SubCategories")
                         .HasForeignKey("ParentCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ParentCategory");
@@ -732,15 +730,7 @@ namespace Deliver.Dal.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Deliver.Entities.Entities.SubCategory", "SubCategory")
-                        .WithMany("Suppliers")
-                        .HasForeignKey("SubCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("ApplicationUser");
-
-                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("Deliver.Entities.Entities.Zone", b =>
@@ -833,11 +823,6 @@ namespace Deliver.Dal.Migrations
             modelBuilder.Entity("Deliver.Entities.Entities.ParentCategory", b =>
                 {
                     b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("Deliver.Entities.Entities.SubCategory", b =>
-                {
-                    b.Navigation("Suppliers");
                 });
 
             modelBuilder.Entity("Deliver.Entities.Entities.Zone", b =>

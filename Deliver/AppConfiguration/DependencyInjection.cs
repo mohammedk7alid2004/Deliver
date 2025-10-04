@@ -33,6 +33,8 @@ public static class DependencyInjection
         services.AddScoped<IParentCategoryServices, ParentCategoryServices>();
       services.AddScoped<ISubCategoryServices, SubCategoryServices>();
         services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+        //services.AddScoped<ISupplierRepository, SupplierRepository>();
+        services.AddScoped<ISupplierServices, SupplierServices>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddMemoryCache();
         services.AddScoped<EmailBodyBuilder>();

@@ -25,6 +25,12 @@ public class UnitOfWork : IUnitOfWork
 
     public IRepository<Delivery> Deliveries => throw new NotImplementedException();
 
+    public IRepository<Supplier> Suppliers { get; }
+
+    public IRepository<ParentCategory> ParentCategories { get; }
+
+    public IRepository<SubCategory> SubCategories { get; }
+
     public async Task<TResult> ExecuteInTransactionAsync<TResult>(Func<Task<TResult>> action)
     {
         using var transaction = await _context.Database.BeginTransactionAsync();

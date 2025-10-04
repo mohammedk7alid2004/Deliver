@@ -1,4 +1,6 @@
-﻿namespace Deliver.Entities.Entities;
+﻿using System.Collections.Generic;
+
+namespace Deliver.Entities.Entities;
 
 public class SubCategory
 {
@@ -10,4 +12,6 @@ public class SubCategory
     public int ParentCategoryId { get; set; }
 
     public virtual ParentCategory ParentCategory { get; set; } = default!;
+    public virtual ICollection<Supplier> Suppliers { get; set; } =[];
+
 }
