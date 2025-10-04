@@ -1,11 +1,4 @@
 ﻿using Deliver.BLL.DTOs.Delivery;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Deliver.BLL.FileHelper;
-
 namespace Deliver.BLL.Services
 {
     public class DeliveryService(IDeliveryRepository deliveryRepository,UserManager<ApplicationUser> userManager) : IDeliveryService

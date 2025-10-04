@@ -16,11 +16,24 @@ public class ApplicationDbContext:IdentityDbContext<ApplicationUser,IdentityRole
     public DbSet<Zone> zones { get; set; }
     public DbSet<Street> streets { get; set; }
     public DbSet<Address> addresses { get; set; }
-
+    public DbSet<ParentCategory> parentCategories { get; set; }
+    public DbSet<SubCategory> subCategories { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyAllConfigurations();
 
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<SubCategory>()
+            .HasOne(s => s.ParentCategory)
+            .WithMany(p => p.SubCategories)
+            .HasForeignKey(s => s.ParentCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Supplier>()
+            .HasOne(s => s.SubCategory)
+            .WithMany(sub => sub.Suppliers)
+            .HasForeignKey(s => s.SubCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
